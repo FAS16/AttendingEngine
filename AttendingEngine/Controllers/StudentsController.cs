@@ -48,7 +48,13 @@ namespace AttendingEngine.Controllers
                 .Include(s => s.Class.Courses.Select(c => c.Lessons))
                 .Include(s => s.Class.Courses.Select(c => c.Teacher))
                 .Include(s => s.Attendances)
+                .Include(s => s.Attendances.Select(a => a.Lesson))
                 .SingleOrDefaultAsync(s => s.Email == userEmail);
+
+            if (student == null)
+            {
+                NotFound();
+            }
 
             var dto = Mapper.Map<Student, StudentDto>(student);
 

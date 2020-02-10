@@ -14,7 +14,7 @@ namespace AttendingEngine.Models
 
         [Required]
         public string Name { get; set; }
-
+//
         [Index(IsUnique = true)]
         [StringLength(200)]
         [Required]

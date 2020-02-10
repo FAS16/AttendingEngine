@@ -6,7 +6,6 @@ namespace AttendingEngine.Models
 {
     public class Attendance
     {
-        [Required]
         public int Id { get; set; }
 
         [Required]
@@ -25,9 +24,11 @@ namespace AttendingEngine.Models
 
        
 
-        [Required]
+//        [Required]
         public Student Student { get; set; }
 
+//        [Required]
+        public Lesson Lesson { get; set; }
 
 
         [Required]

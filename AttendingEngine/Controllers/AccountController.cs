@@ -7,7 +7,6 @@ using System.Security.Cryptography;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
-using System.Web.Http.ModelBinding;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
@@ -365,7 +364,7 @@ namespace AttendingEngine.Controllers
 
         // POST api/Account/Register/Teacher
         [AllowAnonymous]
-        [Route("Register/Student")]
+        [Route("Register/Teacher")]
         public async Task<IHttpActionResult> RegisterTeacher(RegisterBindingModel model)
         {
             if (!ModelState.IsValid)

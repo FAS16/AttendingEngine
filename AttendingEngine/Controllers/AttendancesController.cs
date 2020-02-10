@@ -9,20 +9,47 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
+using System.Web.Http.Results;
 using AttendingEngine.Managers;
 using AttendingEngine.Models;
 
 namespace AttendingEngine.Controllers
 {
+    [RoutePrefix("api/Attendances")]
     public class AttendancesController : ApiController
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: api/Attendances
-        [Authorize(Roles = "Admin, Teacher")]
+//        [Authorize(Roles = "Admin, Teacher")]
         public IQueryable<Attendance> GetAttendances()
         {
             return db.Attendances;
+        }
+
+        [Route("{email}")]
+        public async Task<IHttpActionResult> GetTestAttendance(string email)
+        {
+            var userEmail = User.Identity.Name;
+
+//            if (userEmail != email)
+//            {
+//                return Unauthorized();
+//            }
+
+            var student = await db.Students.SingleOrDefaultAsync(a => a.Email == email);
+
+            if (student == null)
+            {
+                NotFound();
+            }
+
+            var attendances = await db.Attendances
+                .Include(a => a.Lesson.Course)
+                .Where(a => a.StudentId == student.Id)
+                .ToListAsync();
+
+            return Ok(attendances);
         }
 
         // GET: api/Attendances/5
@@ -159,7 +186,7 @@ namespace AttendingEngine.Controllers
                 db.Attendances.Add(fraudAttendance);
                 await db.SaveChangesAsync();
 
-                return BadRequest("Der er kommet flere check ind, fra samme telefon");
+                return BadRequest("Snyd! Der er kommet forskellige check ind, fra forskellige elever, fra samme telefon");
 
             }
 
@@ -197,7 +224,8 @@ namespace AttendingEngine.Controllers
                 db.Attendances.Add(checkOutAttendance);
                 await db.SaveChangesAsync();
 
-                return Content(HttpStatusCode.Created, "Check ud fuldført!");
+
+                return CreatedAtRoute("DefaultApi", new { id = checkOutAttendance.Id }, checkOutAttendance);
             }
 
             if (similarAttendances.Count == 2 && similarAttendances[0].CheckType != similarAttendances[1].CheckType)
@@ -228,7 +256,7 @@ namespace AttendingEngine.Controllers
 
 
         // DELETE: api/Attendances/5
-        [ResponseType(typeof(Attendance))]
+        [ResponseType(typeof(Attendance))] 
         [Authorize(Roles = "Admin, Teacher")]
         public async Task<IHttpActionResult> DeleteAttendance(int id)
         {
@@ -264,6 +292,8 @@ namespace AttendingEngine.Controllers
         {
             return db.Attendances.Count(e => e.Id == id) > 0;
         }
+
+
 
 
     }

@@ -304,6 +304,10 @@
     <Compile Include="Migrations\201912181204350_AddCourseToLesson.Designer.cs">
       <DependentUpon>201912181204350_AddCourseToLesson.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202001201654439_Checking.cs" />
+    <Compile Include="Migrations\202001201654439_Checking.Designer.cs">
+      <DependentUpon>202001201654439_Checking.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountBindingModels.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -467,6 +471,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201912181204350_AddCourseToLesson.resx">
       <DependentUpon>201912181204350_AddCourseToLesson.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202001201654439_Checking.resx">
+      <DependentUpon>202001201654439_Checking.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
